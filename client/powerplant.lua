@@ -1319,7 +1319,6 @@ function ScaleformLabel(label)
     BeginTextCommandScaleformString(label)
     EndTextCommandScaleformString()
 end
-
 function PhoneHacking(output, time)
     if output then
         TriggerEvent('mhacking:hide')
