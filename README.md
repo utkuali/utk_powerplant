@@ -15,4 +15,4 @@ You can set blackout duration in server.lua line 3: "blackoutdur"
 You can set cooldown in server.lua line4: "cooldown"
 
 
-IMPORTANT NOTE: If you are using vMenu or any other resource like it which controles light states in the game, blackout will not work, because vMenu keeps lights states always on.
+IMPORTANT NOTE: If you are using vMenu or any other resource like it which controls light states in the game, blackout will not work, because vMenu keeps lights states always on.
