@@ -266,7 +266,7 @@ end)
 function UTK:GetStage(...)
     ESX.TriggerServerCallback("utk_pb:GetData", function(output)
         self.info = output
-        if not self.info.stage == 3 then
+        if not self.info.stage == 2 then
             self:HandleInfo()
         end
     end)
