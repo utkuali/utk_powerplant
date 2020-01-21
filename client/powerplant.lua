@@ -24,7 +24,7 @@ UTK = {
     hacksuccess = false,
     hackfail = false,
     hackres = false,
-    showtime,
+    showtime = 60,
     currenthack,
     planted1,
     planted2,
@@ -1261,7 +1261,7 @@ function SmallExp(method, coords)
     end
 end
 
-RegisterNetEvent("utk_pn:reset")
+RegisterNetEvent("utk_pb:reset")
 RegisterNetEvent("utk_pb:handlePlayers_c")
 RegisterNetEvent("utk_pb:upUTK")
 RegisterNetEvent("utk_pb:lock")
