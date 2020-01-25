@@ -1,5 +1,6 @@
 ESX = nil
-local info = {stage = 0, style = nil}
+local info = {stage = 0, style = nil, locked = false}
+local blackoutstatus = false
 local blackoutdur = 600 -- Duration of blackout in seconds
 local cooldown = 3600 -- duration for hitting powerplant again
 
@@ -10,6 +11,7 @@ RegisterServerEvent("utk_pb:removeItem")
 RegisterServerEvent("utk_pb:lock")
 RegisterServerEvent("utk_pb:handlePlayers")
 RegisterServerEvent("utk_pb:blackout")
+RegisterServerEvent("utk_pb:checkblackout")
 
 ESX.RegisterServerCallback("utk_pb:GetData", function(source, cb)
     cb(info)
@@ -27,7 +29,7 @@ end)
 AddEventHandler("utk_pb:updateUTK", function(table)
     local xPlayers = ESX.GetPlayers()
 
-    info = {stage = table.info.stage, style = table.info.style}
+    info = {stage = table.info.stage, style = table.info.style, locked = table.info.locked}
     for i = 1, #xPlayers, 1 do
         TriggerClientEvent("utk_pb:upUTK", xPlayers[i], table)
     end
@@ -53,7 +55,13 @@ AddEventHandler("utk_pb:handlePlayers", function()
         TriggerClientEvent("utk_pb:handlePlayers_c", xPlayers[i])
     end
 end)
+AddEventHandler("utk_pb:checkblackout", function()
+    if blackoutstatus == true then
+        TriggerClientEvent("utk_pb:power", source, true)
+    end
+end)
 AddEventHandler("utk_pb:blackout", function(status)
+    blackoutstatus = true
     local xPlayers = ESX.GetPlayers()
 
     for i = 1, #xPlayers, 1 do
@@ -68,6 +76,7 @@ function BlackoutTimer()
         Citizen.Wait(1000)
         timer = timer - 1
     until timer == 0
+    blackoutstatus = false
     local xPlayers = ESX.GetPlayers()
 
     for i = 1, #xPlayers, 1 do

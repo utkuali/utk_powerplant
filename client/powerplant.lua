@@ -16,7 +16,6 @@ local RouletteWords = {
     "MAETHRIL"
 }
 UTK = {
-    locked = false,
     guards = 1972614767,
     police = 2046537925,
     others = 1403091332,
@@ -24,7 +23,7 @@ UTK = {
     hacksuccess = false,
     hackfail = false,
     hackres = false,
-    showtime,
+    showtime = 60,
     currenthack,
     planted1,
     planted2,
@@ -255,6 +254,7 @@ Citizen.CreateThread(function()
 	end
 
     PlayerData = ESX.GetPlayerData()
+    TriggerServerEvent("utk_pb:checkblackout")
     AddRelationshipGroup("guards")
     AddRelationshipGroup("police")
     AddRelationshipGroup("others")
@@ -266,13 +266,11 @@ end)
 function UTK:GetStage(...)
     ESX.TriggerServerCallback("utk_pb:GetData", function(output)
         self.info = output
-        if not self.info.stage == 2 then
-            self:HandleInfo()
-        end
+        return self:HandleInfo()
     end)
 end
 function UTK:HandleInfo(...)
-    if not self.locked then
+    if not self.info.locked then
         if self.info.stage == 0 then
             Citizen.CreateThread(function()
                 while true do
@@ -564,21 +562,21 @@ function UTK:HandleInfo(...)
         elseif self.info.stage == 2 then
             if self.info.style == 1 then
                 UTK.showtime = 60
-                self.stage = 3
-                self.style = nil
-                self.locked = true
-                self:Blackout()
-                return TriggerServerEvent("utk_pb:updateUTK", self)
+                self.info.stage = 3
+                self.info.style = nil
+                self.info.locked = true
+                TriggerServerEvent("utk_pb:updateUTK", self)
+                return self:Blackout()
             elseif self.info.style == 2 then
                 UTK.showtime = 60
-                self.stage = 3
-                self.style = nil
-                self.locked = true
-                self:Blackout()
-                return TriggerServerEvent("utk_pb:updateUTK", self)
+                self.info.stage = 3
+                self.info.style = nil
+                self.info.locked = true
+                TriggerServerEvent("utk_pb:updateUTK", self)
+                return self:Blackout()
             end
         end
-    --[[elseif self.locked then -- don't enable this, it's for prisonbreak but it's not finished
+    --[[elseif self.info.locked then -- don't enable this, it's for prisonbreak but it's not finished
         print("3")
         if self.info.stage == 3 then
             print("4")
@@ -830,9 +828,9 @@ function UTK:HandleInfo(...)
                         end
                     end
                     if UTK.prison.planted1 and UTK.prison.planted2 and UTK.prison.planted3 and UTK.prison.planted4 and UTK.prison.planted5 and UTK.prison.planted6 and UTK.prison.planted7 and UTK.prison.planted8 and UTK.prison.planted9 and UTK.prison.planted10 and UTK.prison.planted11 and UTK.prison.planted12 then
-                        self.stage = 0
-                        self.style = nil
-                        self.locked = true
+                        self.info.stage = 0
+                        self.info.style = nil
+                        self.info.locked = true
                         return TriggerServerEvent("utk_pb:updateUTK", self)
                     end
                 end
@@ -1261,7 +1259,7 @@ function SmallExp(method, coords)
     end
 end
 
-RegisterNetEvent("utk_pn:reset")
+RegisterNetEvent("utk_pb:reset")
 RegisterNetEvent("utk_pb:handlePlayers_c")
 RegisterNetEvent("utk_pb:upUTK")
 RegisterNetEvent("utk_pb:lock")
@@ -1272,13 +1270,13 @@ AddEventHandler("utk_pb:reset", function()
     UTK = UTKreset
     UTK:GetStage()
 end)
-AddEventHandler("utk_pb:lock", function()
-    UTK.locked = true
-    UTK.HandleInfo()
+AddEventHandler("utk_pb:lock_c", function()
+    UTK.info.locked = true
+    UTK:HandleInfo()
 end)
 AddEventHandler("utk_pb:upUTK", function(table) -- BURADA KALDIN
-    UTK.info = table.info
-    UTK.HandleInfo()
+    UTK.info = table
+    UTK:HandleInfo()
 end)
 AddEventHandler("utk_pb:handlePlayers_c", function()
     HandlePlayers()
@@ -1288,7 +1286,7 @@ AddEventHandler("utk_pb:power", function(status)
     if not status then
         exports['mythic_notify']:SendAlert("success", "Power is back on!")
     elseif status then
-        UTK.locked = true
+        UTK.info.locked = true
     end
 end)
 AddEventHandler("utk_pb:showtime", function(method)
@@ -1584,7 +1582,6 @@ Citizen.CreateThread(function()
 end)
 
 UTKreset = {
-    locked = false,
     guards = 1972614767,
     police = 2046537925,
     others = 1403091332,
