@@ -1568,8 +1568,8 @@ Citizen.CreateThread(function()
                         UTK.DisableInput = false
                         Hacking = false
                         SorF = false
-                        UTK.stage = 0
-                        UTK.style = nil
+                        UTK.info.stage = 0
+                        UTK.info.style = nil
                         UTK:HandleInfo()
                         FreezeEntityPosition(PlayerPedId(), false)
                     end
