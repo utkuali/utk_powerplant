@@ -563,14 +563,12 @@ function UTK:HandleInfo(...)
             if self.info.style == 1 then
                 UTK.showtime = 60
                 self.info.stage = 3
-                self.info.style = nil
                 self.info.locked = true
                 TriggerServerEvent("utk_pb:updateUTK", self)
                 return self:Blackout()
             elseif self.info.style == 2 then
                 UTK.showtime = 60
                 self.info.stage = 3
-                self.info.style = nil
                 self.info.locked = true
                 TriggerServerEvent("utk_pb:updateUTK", self)
                 return self:Blackout()
