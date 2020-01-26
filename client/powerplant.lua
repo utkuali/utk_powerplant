@@ -564,14 +564,16 @@ function UTK:HandleInfo(...)
                 UTK.showtime = 60
                 self.info.stage = 3
                 self.info.locked = true
+                self:Blackout()
                 TriggerServerEvent("utk_pb:updateUTK", self)
-                return self:Blackout()
+                return
             elseif self.info.style == 2 then
                 UTK.showtime = 60
                 self.info.stage = 3
                 self.info.locked = true
+                self:Blackout()
                 TriggerServerEvent("utk_pb:updateUTK", self)
-                return self:Blackout()
+                return
             end
         end
     --[[elseif self.info.locked then -- don't enable this, it's for prisonbreak but it's not finished
