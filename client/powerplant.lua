@@ -1262,7 +1262,7 @@ end
 RegisterNetEvent("utk_pb:reset")
 RegisterNetEvent("utk_pb:handlePlayers_c")
 RegisterNetEvent("utk_pb:upUTK")
-RegisterNetEvent("utk_pb:lock")
+RegisterNetEvent("utk_pb:lock_c")
 RegisterNetEvent("utk_pb:power")
 RegisterNetEvent("utk_pb:showtime")
 
